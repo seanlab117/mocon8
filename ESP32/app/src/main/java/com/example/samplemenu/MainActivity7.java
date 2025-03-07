@@ -40,18 +40,18 @@ public class MainActivity7 extends AppCompatActivity {
 //                    for (int i = 1; i <= 10; i++) {
 //                        result.append(number).append(" x ").append(i).append(" = ").append(number * i).append("\n");
 //                    }
-                    for (int i = 1; i <= 3; i++) {
-                        int number2=Integer.parseInt("10");;
-                        result.append("motor").append("  ").append(i).append(" = ").append(number2 * i).append("\n");
-                    }
-                    for (int j = 1; j <= 4; j++) {
-                        int number3=Integer.parseInt("10");;
-                        result.append("RGB").append("  ").append(j).append(" = ").append(number3 * j).append("\n");
-                    }
-                    for (int k = 1; k <= 3; k++) {
-                        int number4=Integer.parseInt("10");;
-                        result.append("Display").append("  ").append(k).append(" = ").append(number4 * k).append("\n");
-                    }
+//                    for (int i = 1; i <= 3; i++) {
+//                        int number2=Integer.parseInt("10");;
+//                        result.append("motor").append("  ").append(i).append(" = ").append(number2 * i).append("\n");
+//                    }
+//                    for (int j = 1; j <= 4; j++) {
+//                        int number3=Integer.parseInt("10");;
+//                        result.append("RGB").append("  ").append(j).append(" = ").append(number3 * j).append("\n");
+//                    }
+//                    for (int k = 1; k <= 3; k++) {
+//                        int number4=Integer.parseInt("10");;
+//                        result.append("Display").append("  ").append(k).append(" = ").append(number4 * k).append("\n");
+//                    }
 
                     Text_view.setText(result.toString());
                 } catch (NumberFormatException e) {

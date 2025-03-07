@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.io.BufferedReader;
@@ -43,7 +44,7 @@ public class MainActivity3 extends Activity {
     // UI elements
     TextView textStatus, textRX, textTX;
     EditText editTextAddress, editTextPort, editSend;
-    Button buttonConnect, buttonSend;
+    Button buttonConnect, buttonSend,disconnect;
 
     private WifiManager wifiManager;
 
@@ -57,10 +58,18 @@ public class MainActivity3 extends Activity {
     Button button;
     TextView Text_view;
 
+
+
     private Spinner types;
     private Button show;
     private ListView drinks;
     private MockupDA da;
+
+    private Socket socket;
+
+    private OutputStream socketOutput;
+    private BufferedReader socketInput;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +84,6 @@ public class MainActivity3 extends Activity {
         editTextAddress = (EditText)findViewById(R.id.address);
         editTextPort = (EditText)findViewById(R.id.port);
         editSend = (EditText)findViewById(R.id.editSend);
-        buttonConnect = (Button)findViewById(R.id.connect);
 
         buttonSend = (Button)findViewById(R.id.buttonSend);
 
@@ -99,33 +107,45 @@ public class MainActivity3 extends Activity {
         Text_view = findViewById(R.id.outputText);
         Et_text.setText("scenario 1");
         button = findViewById(R.id.submitButton);
-        button.setOnClickListener(new View.OnClickListener() {
+        Log.d("haha", "MainActivity3::scanResults");
+        buttonConnect = findViewById(R.id.connect);
+        disconnect=findViewById(R.id.disconnect);
+
+        buttonConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("haha", "buttonConnect.setOnClickListene");
 
                 try {
                     String numberString ="0"; // Et_text.getText().toString();
                     int number = Integer.parseInt(numberString);
-
+                    Log.d("haha", " connectbutton.setOnClickListener:connect");
                     StringBuilder result = new StringBuilder();
 
-//                    for (int i = 1; i <= 10; i++) {
-//                        result.append(number).append(" x ").append(i).append(" = ").append(number * i).append("\n");
-//                    }
-                    for (int i = 1; i <= 3; i++) {
-                        int number2=Integer.parseInt("10");;
-                        result.append("motor").append("  ").append(i).append(" = ").append(number2 * i).append("\n");
-                    }
-                    for (int j = 1; j <= 3; j++) {
-                        int number3=Integer.parseInt("10");;
-                        result.append("RGB").append("  ").append(j).append(" = ").append(number3 * j).append("\n");
-                    }
-                    for (int k = 1; k <= 1; k++) {
-                        int number4=Integer.parseInt("10");;
-                        result.append("Display").append("  ").append(k).append(" = ").append(number4 * k).append("\n");
-                    }
-
                     Text_view.setText(result.toString());
+                    textStatus.setText("");
+                    setStatus("connected");
+                    //textStatus.append("connected");
+                    buttonSend.setEnabled(true);
+                    wifiTask = new WiFiSocketTask(address, port);
+                    Log.d("haha", " WiFiSocketTask::"+wifiTask);
+
+                    if(wifiTask == null) {
+                        setStatus("Already disconnected!");
+                        return;
+                    }
+                    textRX.setEnabled(true);
+                    textTX.setEnabled(true);
+                    String msg="1";
+                    textRX.setText(msg);
+                    Log.d("haha", "[RX] " + msg);
+                    Log.d("haha", "[TX] " + "xxxx");
+//                    wifiTask.disconnect();
+//                    setStatus("Disconnecting...");
+
+                    //button.setEnabled(true);
+
+                    Log.d("haha", " buttonConnect.setOnClickListener:connect::"+textStatus.getText());
                 } catch (NumberFormatException e) {
                     Text_view.setText("Please enter a valid number");
                 } catch (Exception e) {
@@ -134,10 +154,48 @@ public class MainActivity3 extends Activity {
 
             }
         });
+        buttonSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Log.d("haha", " buttonSend.setOnClickListener:connect::"+textStatus.getText());
+                if(wifiTask == null) {
+                    setStatus("Already disconnected!");
+                    Log.d("haha", " buttonSend.wifiTask == null::");
+                    return;
+                }
+                Log.d("haha", " socketOutput.getOutputStream::"+wifiTask.outStream);
+
+
+
+                // setStatus("Sending...");
+
+                Log.d("haha", " Sending.setOnClickListener:connect::");
+            }
+        });
+        disconnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("haha", " disconnect.setOnClickListener:connect::"+textStatus.getText());
+                if(wifiTask == null) {
+                    setStatus("Already disconnected!");
+                    Log.d("haha", " disconnect.setOnClickListener:connect::");
+                    return;
+                }
+
+                wifiTask.disconnect();
+                buttonConnect.setEnabled(false);
+                setStatus("Disconnecting...");
+                Log.d("haha", " disconnect.setOnClickListener:connect::");
+            }
+        });
+
+
 
 
 
     }
+
     private void showDrinksList(List<Drink> drinkList){
         List<String> displayList = new ArrayList<>();
         for (Drink drink : drinkList) {
@@ -172,6 +230,7 @@ public class MainActivity3 extends Activity {
     }
     void setStatus(String s) {
         Log.v(TAG, s);
+        Log.d("haha", " setStatus");
         textStatus.setText(s);
     }
 
@@ -188,7 +247,7 @@ public class MainActivity3 extends Activity {
         try {
             // Get the remote host from the UI and start the thread
             String host = editTextAddress.getText().toString();
-            int port = Integer.parseInt(editTextPort.getText().toString());
+            String port = editTextPort.getText().toString();
 
             // Start the asyncronous task thread
             setStatus("Attempting to connect...");
@@ -220,7 +279,7 @@ public class MainActivity3 extends Activity {
      */
     private void connected() {
         setStatus("Connected.");
-        Log.v("haha", "Connected.");
+        Log.d("haha", "Connected.");
 
         buttonSend.setEnabled(true);
     }
@@ -290,14 +349,17 @@ public class MainActivity3 extends Activity {
         private int timeout = 5000;
 
         // Constructor
-        WiFiSocketTask(String address, int port) {
+        WiFiSocketTask(String address, String port) {
             this.address = address;
-            this.port = port;
+            this.port = Integer.parseInt(port);
         }
 
         /**
          * Main method of AsyncTask, opens a socket and continuously reads from it
          */
+
+
+
         @Override
         protected Void doInBackground(Void... arg) {
 
@@ -309,8 +371,8 @@ public class MainActivity3 extends Activity {
                 secondIntent.getIntExtra("port", 0);
                 socket = new Socket();
                 socket.connect(new InetSocketAddress(address, port), timeout);
-                Log.d("haha", "address"+address);
-                Log.d("haha", "port"+port);
+                Log.d("haha", "doInBackground:address"+address);
+                Log.d("haha", "doInBackground:port"+port);
                 // Get the input and output streams
                 inStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 outStream = socket.getOutputStream();
@@ -351,6 +413,7 @@ public class MainActivity3 extends Activity {
             // Send a disconnect message
             publishProgress(DISCONNECTED_MSG);
 
+
             // Once disconnected, try to close the streams
             try {
                 if (socket != null) socket.close();
@@ -368,6 +431,8 @@ public class MainActivity3 extends Activity {
          * doInBackground() function running in a separate thread when
          * publishProgress() is called.
          */
+
+
         @Override
         protected void onProgressUpdate(String... values) {
 

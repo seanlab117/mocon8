@@ -86,4 +86,21 @@
     <string name="wifi_scan_unsuccessful">Scan request denied or failed\n(throttling, Wi-Fi disabled, or other)</string>
     <string name="wifi_scan_successful">Received scan results\n(including unsolicited)</string>
 
+    <string name="title">Color Selection</string>
+    <string name="HEX">Color HEX: </string>
+    <string name="RGB">Color RGB: </string>
+    <string name="Red">Red</string>
+    <string name="Blue">Blue</string>
+    <string name="Green">Green</string>
+
+    <string name="White">White</string>
+    <string name="Black">Black</string>
+    <string name="BlueButton">Blue</string>
+
+    <string name="RedSeek">64</string>
+    <string name="GreenSeek">128</string>
+    <string name="BlueSeek">0</string>
+
+    <string name="resetButton">Reset</string>
+
 </resources>

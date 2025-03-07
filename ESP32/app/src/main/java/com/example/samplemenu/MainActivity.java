@@ -32,10 +32,10 @@ public class MainActivity extends AppCompatActivity {
 
     public String packageName3="com.teraunits.myapplication";
     public String className3="com.teraunits.myapplication.MainActivity";
-
     public String packageName4="com.example.wifiscan";
     public String className4="com.example.wifiscan.MainActivity";
-
+    public String packageName5="com.example.wifiscan";
+    public String className5="com.example.wifiscan.MainActivity";
     private Spinner types;
     private Button show;
     private ListView drinks;
@@ -136,48 +136,60 @@ public class MainActivity extends AppCompatActivity {
             }
             break;
             case 1: {
-                Intent intent = new Intent(this, MainActivity2.class);
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.setClassName(packageName1, className1);
+                intent.putExtra("challenge", "123456");
                 ActivityResultLauncher.launch(intent);
                 Toast.makeText(getApplicationContext(), "position 1", Toast.LENGTH_LONG).show();
             }
             break;
             case 2: {
-//                Intent intent = new Intent(this, MainActivity.class);
-//                intent.setClassName(packageName4, className4);
-//                ActivityResultLauncher.launch(intent);
-                Intent intent = new Intent(this, MainActivity2.class);
+               Intent intent = new Intent(this, MainActivity.class);
+                intent.setClassName(packageName3, className3);
+                intent.putExtra("challenge", "123456");
                 ActivityResultLauncher.launch(intent);
                 Toast.makeText(getApplicationContext(), "position 2", Toast.LENGTH_LONG).show();
             }
             break;
             case 3: {
-                Intent intent = new Intent(this, MainActivity3.class);
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.setClassName(packageName4, className4);
+                intent.putExtra("challenge", "123456");
                 ActivityResultLauncher.launch(intent);
                 Toast.makeText(getApplicationContext(), "position 3", Toast.LENGTH_LONG).show();
             }
             break;
             case 4: {
-//                Intent intent = new Intent(this, MainActivity7.class);
-//                ActivityResultLauncher.launch(intent)
-                Intent intent = new Intent(this, MainActivity4.class);
-                ActivityResultLauncher.launch(intent);;
+                Intent intent = new Intent(this, MainActivity2.class);
+                ActivityResultLauncher.launch(intent);
                 Toast.makeText(getApplicationContext(), "position 4", Toast.LENGTH_LONG).show();
             }
             break;
             case 5: {
-//                Intent intent = new Intent(this, MainActivity8.class);
-//                ActivityResultLauncher.launch(intent);
+                Intent intent = new Intent(this, MainActivity4.class);
+                ActivityResultLauncher.launch(intent);
                 Toast.makeText(getApplicationContext(), "position 5", Toast.LENGTH_LONG).show();
             }
             break;
             case 6: {
+
                 Intent intent = new Intent(this, MainActivity6.class);
                 ActivityResultLauncher.launch(intent);
                 Toast.makeText(getApplicationContext(), "position 6", Toast.LENGTH_LONG).show();
             }
+            case 7: {
+                Intent intent = new Intent(this, MainActivity6.class);
+                ActivityResultLauncher.launch(intent);
+                Toast.makeText(getApplicationContext(), "position 7", Toast.LENGTH_LONG).show();
+            }
+            case 8: {
+                Intent intent = new Intent(this, MainActivity8.class);
+                ActivityResultLauncher.launch(intent);
+                Toast.makeText(getApplicationContext(), "position 8", Toast.LENGTH_LONG).show();
+            }
             break;
             default: {
-                Intent intent = new Intent(this, MainActivity7.class);
+                Intent intent = new Intent(this, MainActivity6.class);
                 ActivityResultLauncher.launch(intent);
                 Toast.makeText(getApplicationContext(), "position default", Toast.LENGTH_LONG).show();
             }

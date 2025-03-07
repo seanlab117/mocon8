@@ -38,6 +38,7 @@ public class MainActivity2 extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 123;
 
     ProgressDialog progressDialog;
+    private boolean check=false;
 
     //sean
 
@@ -64,6 +65,7 @@ public class MainActivity2 extends AppCompatActivity {
                 //String selectedItem = displayList.get(position);
                 Toast.makeText(MainActivity2.this, "클릭한 아이템: " + position, Toast.LENGTH_SHORT).show();
                 openBTSCAN2(position,wifiList);
+                check=true;
             }
         });
 
@@ -106,21 +108,24 @@ public class MainActivity2 extends AppCompatActivity {
                 // Display the WiFi networks in the ListView
                 for (ScanResult result : scanResults) {
 
-                    String wifiInfo = result.SSID + " (" + result.capabilities + ")";
+//                    String wifiInfo = result.SSID + " (" + result.capabilities + ")";
 
-//                    String wifiInfo = result.SSID;
+                  String wifiInfo = result.SSID;
 //
                     //Toast.makeText(MainActivity.this, wifiInfo, Toast.LENGTH_LONG).show();
                     Log.d("haha","result."+result.SSID);
-                    adapter.add(wifiInfo);
+                    if(!check) {
+                        adapter.add(wifiInfo);
+                    }
                 }
 
                 // Notify the adapter that the data set has changed
-                adapter.notifyDataSetChanged();
-
-                progressDialog.dismiss();
-                // Start a new scan for continuous updates
-                wifiManager.startScan();
+                if(!check) {
+                    adapter.notifyDataSetChanged();
+                    progressDialog.dismiss();
+                    // Start a new scan for continuous updates
+                    wifiManager.startScan();
+                }
 
             }
         }
@@ -145,14 +150,20 @@ public class MainActivity2 extends AppCompatActivity {
                 Log.d("haha", "wifiList.getTransitionName()"+wifiList.getTransitionName());
                 Log.d("haha", "openBTSCAN2::scanResults"+wifiList);
                 Log.d("haha", "openBTSCAN2::scanResults"+wifiList);
-                intent.putExtra("address","192.168.0.1") ;
-                intent.putExtra("port","80") ;
+                intent.putExtra("address","192.168.0.103") ;
+                intent.putExtra("port","3000") ;
                 ActivityResultLauncher.launch(intent);
                 Toast.makeText(getApplicationContext(), "position 0", Toast.LENGTH_LONG).show();
             }
             break;
             case 1: {
-
+                Intent intent = new Intent(this, MainActivity3.class);
+                Log.d("haha", "wifiList.getTransitionName()"+wifiList.getTransitionName());
+                Log.d("haha", "openBTSCAN2::scanResults"+wifiList);
+                Log.d("haha", "openBTSCAN2::scanResults"+wifiList);
+                intent.putExtra("address","192.168.0.103") ;
+                intent.putExtra("port","7000") ;
+                ActivityResultLauncher.launch(intent);
                 Toast.makeText(getApplicationContext(), "position 1", Toast.LENGTH_LONG).show();
             }
             break;
