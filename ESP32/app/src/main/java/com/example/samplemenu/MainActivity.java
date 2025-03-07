@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 //                Intent intent = new Intent(this, MainActivity.class);
 //                intent.setClassName(packageName4, className4);
 //                ActivityResultLauncher.launch(intent);
-                Intent intent = new Intent(this, MainActivity3.class);
+                Intent intent = new Intent(this, MainActivity2.class);
                 ActivityResultLauncher.launch(intent);
                 Toast.makeText(getApplicationContext(), "position 2", Toast.LENGTH_LONG).show();
             }

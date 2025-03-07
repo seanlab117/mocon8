@@ -145,7 +145,7 @@ public class MainActivity2 extends AppCompatActivity {
                 Log.d("haha", "wifiList.getTransitionName()"+wifiList.getTransitionName());
                 Log.d("haha", "openBTSCAN2::scanResults"+wifiList);
                 Log.d("haha", "openBTSCAN2::scanResults"+wifiList);
-                intent.putExtra("address","192.168.4.1") ;
+                intent.putExtra("address","192.168.0.1") ;
                 intent.putExtra("port","80") ;
                 ActivityResultLauncher.launch(intent);
                 Toast.makeText(getApplicationContext(), "position 0", Toast.LENGTH_LONG).show();

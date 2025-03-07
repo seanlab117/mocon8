@@ -10,8 +10,8 @@ public class MockupDA {
     public MockupDA(){
         drinks = new ArrayList<>();
         drinks.add(new Drink("Scenario Bluetooth", 12, "scenario1"));
-        drinks.add(new Drink("Scenario Wifi Connecton", 12, "scenario1"));
-        drinks.add(new Drink("Scenario 3  ", 12, "scenario1"));
+        drinks.add(new Drink("Scenario Wifi Connection", 12, "scenario1"));
+        drinks.add(new Drink("Scenario Wifi Connection2  ", 12, "scenario1"));
         drinks.add(new Drink("Scenario 4 ", 4, "scenario2"));
         drinks.add(new Drink("Scenario 5", 5, "scenario2"));
         drinks.add(new Drink("Scenario 6 test", 6, "scenario2"));
