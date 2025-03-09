@@ -137,7 +137,7 @@ public class TinyWebServer extends Thread {
 
 
     public TinyWebServer(final String ip, final int port) throws IOException {
-        Log.d("haha", "TinyWebServer 0" );
+        Log.d("haha", "TinyWebServer 0"+ip );
         InetAddress addr = InetAddress.getByName(ip); ////"172.31.0.186");
         Log.d("haha", "TinyWebServer 1" +addr);
         serverSocket = new ServerSocket(port, 100, addr);

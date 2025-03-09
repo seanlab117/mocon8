@@ -1,9 +1,12 @@
 package com.example.samplemenu;
 
+import static java.lang.System.out;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -15,6 +18,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 public class MainActivity6 extends AppCompatActivity {
 
     TextView textViewColorHex, textViewRGB, textViewRed, textViewGreen, textViewBlue;
@@ -24,14 +34,20 @@ public class MainActivity6 extends AppCompatActivity {
     int greenValue = 128;
     int blueValue = 0;
 
+    ServerSocket server1=null;
+    Socket sock1=null;
+    TextView textViewheader;
+
     private void updateColor(){
         int color = Color.rgb(redValue, greenValue, blueValue);
         imageView.setBackgroundColor(color);
 
         String hex = String.format("#%02X%02X%02X", redValue, greenValue, blueValue);
         textViewColorHex.setText(hex);
-        Log.d("haha", "updateColor:hex::"+hex);
-
+        Log.d("haha", "updateColor:hex 1::"+hex);
+        update(hex);
+        Log.d("haha", "updateColor:hex 2::"+hex);
+       // Log.d("haha", "obj: "+obj);
         String redGreenBlue = String.format("(%d, %d, %d)", redValue, greenValue, blueValue);
         textViewRGB.setText(redGreenBlue);
     }
@@ -53,7 +69,7 @@ public class MainActivity6 extends AppCompatActivity {
         seekBarRed = findViewById(R.id.seekBarRed);
         seekBarGreen = findViewById(R.id.seekBarGreen);
         seekBarBlue = findViewById(R.id.seekBarBlue);
-
+        textViewheader=findViewById(R.id.textView);
         updateColor();
 
         seekBarBlue.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -190,7 +206,119 @@ public class MainActivity6 extends AppCompatActivity {
             }
         });
 
+        Button button2 = findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        startServer();
+                    }
+                }).start();
+            }
+        });
+
+    }
+    public void startServer() {
+
+        try {
+            int portNumber = 8080;
+
+            int backlog=10;
+
+            //PF_INET, SOCK_STREAM, 0)
+            //ServerSocket server = new ServerSocket(portNumber);
+            ServerSocket server = new ServerSocket(portNumber,backlog);//,inetaddres);
+//            printServerLog("서버 시작함: " + portNumber);
+            server1=server;
+            textViewheader.setText("Server is ON");
+            Log.d("haha", "server.start()::" +server1);
+//            InputStream in_s =
+//                    getClass().getClassLoader().getResourceAsStream("posts.json");
+             while (true) { // 클라이언트 접속 대기
+                Socket sock = server.accept(); //접속 요청 오면 accept 메서드를 통해 소켓 객체 반환
+                Log.d("haha", "sock server accept::"+sock.toString());
+                InetAddress clientHost = sock.getLocalAddress(); // 클라이언트 연결 정보 확인 가능
+                int clientPort = sock.getPort(); // 클라이언트 포트 번호 확인
+                Log.d("haha", "sock server create::clientPort ");
+
+
+//                printServerLog("클라이언트 연결됨: " + clientHost + " : " + clientPort);
+                //url='Click <a href=\"/H\">here</a> to turn the LED on pin 5 on.<br>Click <a href=\"/L\">here</a> to turn the LED on pin 5 off.<br>"'
+                ObjectInputStream instream = new ObjectInputStream(sock.getInputStream());
+
+
+                Object obj = instream.readObject(); // 문자열 받아와
+//                printServerLog("데이터 받음: " + obj); //
+
+                ObjectOutputStream outstream = new ObjectOutputStream(sock.getOutputStream());
+
+                outstream.writeObject(obj + " from Server."); //from server 라는 문자열 붙여서 클라이언트로 다시 보내
+                outstream.flush();
+//                printServerLog("데이터 보냄.");
+
+                sock.close();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+
+    }
+    public void update(String hex){
+        Log.d("haha", "update:hex ::"+hex);
+        try {
+            if (server1 !=null) {
+                Log.d("haha", "sock1 != null::"+hex);
+                Socket sock = server1.accept(); //접속 요청 오면 accept 메서드를 통해 소켓 객체 반환
+                Log.d("haha", "sock server accept::"+sock.toString());
+                InetAddress clientHost = sock.getLocalAddress(); // 클라이언트 연결 정보 확인 가능
+                int clientPort = sock.getPort(); // 클라이언트 포트 번호 확인
+                Log.d("haha", "sock server create::clientPort ");
+
+
+//                printServerLog("클라이언트 연결됨: " + clientHost + " : " + clientPort);
+                //url='Click <a href=\"/H\">here</a> to turn the LED on pin 5 on.<br>Click <a href=\"/L\">here</a> to turn the LED on pin 5 off.<br>"'
+                ObjectInputStream instream = new ObjectInputStream(sock1.getInputStream());
+
+
+                Object obj = instream.readObject(); // 문자열 받아와
+//                printServerLog("데이터 받음: " + obj); //
+
+                ObjectOutputStream outstream = new ObjectOutputStream(sock1.getOutputStream());
+
+                //outstream.writeObject(obj + " from Server."); //from server 라는 문자열 붙여서 클라이언트로 다시 보내
+                outstream.writeObject(hex + " from Server.");
+                outstream.flush();
+//                printServerLog("데이터 보냄.");
+
+                sock1.close();
+            } else
+            {
+                Toast.makeText(MainActivity6.this, "서버를 구동해 주세요: " , Toast.LENGTH_SHORT).show();
+            }
+
+
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopServer();
     }
 
+    public void stopServer() {
+        try {
+            if (server1 != null && !server1.isClosed()) {
+                server1.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

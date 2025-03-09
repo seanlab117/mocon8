@@ -2,6 +2,9 @@ package com.example.samplemenu;
 
 import static android.system.OsConstants.SOCK_STREAM;
 
+//import static com.example.samplemenu.TinyWebServer.serverSocket;
+import static java.lang.System.out;
+
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,10 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -32,7 +39,7 @@ public class MainActivity4 extends AppCompatActivity {
     EditText editText;
     TextView textView, textView2;
     Handler handler = new Handler();
-    Socket sock1;
+    Socket sock1=null;
     ServerSocket server1;
 
     @Override
@@ -117,30 +124,105 @@ public class MainActivity4 extends AppCompatActivity {
 
     public void send(String data) {
         try {
-            int portNumber = 3001;
-            Socket sock = new Socket("localhost", portNumber);
-            Log.d("haha", "client.start()::"+sock.getRemoteSocketAddress() );//sock.getRemoteSocketAddress()
-            printClientLog("소켓 연결함");
+            if (sock1 != null) {
+                int portNumber = 8080;
+                Socket sock = new Socket("0.0.0.0", portNumber);
+                Log.d("haha", "client.start()1::" + sock1.getRemoteSocketAddress());//sock.getRemoteSocketAddress()
+                printClientLog("소켓 연결함1");
 
-            ObjectOutputStream outStream = new ObjectOutputStream(sock.getOutputStream());
+                ObjectOutputStream outStream = new ObjectOutputStream(sock1.getOutputStream());
 
-            outStream.writeObject(data);
-            //outStream.writeObject("hello world");
-            Log.d("send", data);
-            outStream.flush();
-            printClientLog("데이터 전송함");
+                outStream.writeObject(data);
+                //outStream.writeObject("hello world");
+                Log.d("send", data);
+                outStream.flush();
+                printClientLog("데이터 전송함");
 
-            ObjectInputStream insTream = new ObjectInputStream(sock.getInputStream());
-            printClientLog("서버로부터 받음 : " + insTream.readObject());
+                ObjectInputStream insTream = new ObjectInputStream(sock1.getInputStream());
+                printClientLog("서버로부터 받음 : " + insTream.readObject());
 
 
-            sock.close();
+                sock1.close();
+            } else{
+                int portNumber = 8080;
+                Socket sock = new Socket("0.0.0.0", portNumber);
+                Log.d("haha", "client.start()2::" + sock.getRemoteSocketAddress());
+                printClientLog("소켓 연결함2");
+                Log.d("haha", "소켓 연결함2::");
+                printClientLog("소켓 연결함2"+data);
+
+                ObjectOutputStream outStream = new ObjectOutputStream(sock.getOutputStream());
+
+                outStream.writeObject(data);
+                //outStream.writeObject("hello world");
+                Log.d("haha","test:data"+data);
+                outStream.flush();
+                printClientLog("데이터 전송함"+data);
+
+                ObjectInputStream insTream = new ObjectInputStream(sock.getInputStream());
+                printClientLog("서버로부터 받음 : " + insTream.readObject());
+
+
+                sock.close();
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
+
+
     public void startServer() {
+
+        try {
+            int portNumber = 8080;
+            int backlog=50;
+
+            // sean ServerSocket server = new ServerSocket(portNumber,backlog);//,inetaddres);
+            ServerSocket server = new ServerSocket(portNumber,backlog,InetAddress.getByName("0.0.0.0"));
+            printServerLog("서버 외부 접속 시작함: " + portNumber);
+            server1=server;
+            Log.d("haha", "server.start()::" +server1);
+
+            while (true) { // 클라이언트 접속 대기
+                Socket sock = server.accept(); //접속 요청 오면 accept 메서드를 통해 소켓 객체 반환
+                Log.d("haha", "sock server accept::"+sock.toString());
+                InetAddress clientHost = sock.getLocalAddress(); // 클라이언트 연결 정보 확인 가능
+                int clientPort = sock.getPort(); // 클라이언트 포트 번호 확인
+                Log.d("haha", "sock server create::clientPort ");
+
+
+                printServerLog("클라이언트 연결됨: " + clientHost + " : " + clientPort);
+                //url='Click <a href=\"/H\">here</a> to turn the LED on pin 5 on.<br>Click <a href=\"/L\">here</a> to turn the LED on pin 5 off.<br>"'
+                ObjectInputStream instream = new ObjectInputStream(sock.getInputStream());
+
+
+                Object obj = instream.readObject(); // 문자열 받아와
+                printServerLog("데이터 받음: " + obj); //
+
+                ObjectOutputStream outstream = new ObjectOutputStream(sock.getOutputStream());
+
+                outstream.writeObject(obj + " from Server."); //from server 라는 문자열 붙여서 클라이언트로 다시 보내
+                outstream.flush();
+                //printServerLog("데이터 보냄.");
+                printServerLog("데이터 보냄."+obj);
+
+                sock.close();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopServer();
+    }
+
+    public void startServer2() {
         try {
             int portNumber = 3001;
 
@@ -187,9 +269,16 @@ public class MainActivity4 extends AppCompatActivity {
 
 
     public void stopServer() {
+            try {
+                if (server1 != null && !server1.isClosed()) {
+                    server1.close();
+                }
 
-
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
+
 
     void restartServer() {
           openBTSCAN();

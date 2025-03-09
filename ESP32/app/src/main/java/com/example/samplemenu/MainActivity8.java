@@ -22,7 +22,7 @@ public class MainActivity8 extends AppCompatActivity {
             return insets;
         });
         Log.d("haha", "TinyWebServer startServer 1");
-        TinyWebServer.startServer("localhost",9000, "D:\\down18\\mocon8\\ESP32\\app\\src\\main\\assets\\www\\index.html");
+        TinyWebServer.startServer("192.168.219.105",9000, "D:\\down18\\mocon8\\ESP32\\app\\src\\main\\assets\\www\\index.html");
         Log.d("haha", "TinyWebServer startServer 2");
 
     }
