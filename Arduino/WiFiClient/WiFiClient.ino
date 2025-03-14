@@ -19,7 +19,7 @@
 const char *ssid = "MoCon";          // Change this to your WiFi SSID
 const char *password = "MoConLab1111";  // Change this to your WiFi password
 
-const char *host = "api.thingspeak.com";        // This should not be changed
+const char *host = "192.168.0.101";        // This should not be changed
 const int httpPort = 80;                        // This should not be changed
 const String channelID = "2005329";             // Change this to your channel ID
 const String writeApiKey = "V6YOTILH9I7D51F9";  // Change this to your Write API key
@@ -53,6 +53,7 @@ void setup() {
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
+  // Serial.println(pwd);
 }
 
 void readResponse(NetworkClient *client) {
