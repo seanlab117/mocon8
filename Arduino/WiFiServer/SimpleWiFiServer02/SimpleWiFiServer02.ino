@@ -25,16 +25,24 @@
  */
 
 #include <WiFi.h>
+#include <EEPROM.h>
+
+#define EEPROM_SIZE 64
+//#define int value=0
+
 
 const char *ssid = "MoCon";
 const char *password = "MoConLab1111";
-String HTTP_METHOD = "GET"; // 또는 "POST"
+//String HTTP_METHOD = "GET"; // 또는 "POST"
 String PATH_NAME   = "";
 
 WiFiServer server(80);  // 포트 80에서 웹 서버 실행
 
 void setup() {
   Serial.begin(115200);
+  EEPROM.begin(EEPROM_SIZE);
+
+  int value = EEPROM.read(0);
   delay(10);
 
   // We start by connecting to a WiFi network
@@ -43,6 +51,11 @@ void setup() {
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
+  EEPROM.write(0, 42);
+  // int value = 1234;
+  EEPROM.put(10, value);
+  EEPROM.commit();
+
 
   WiFi.begin(ssid, password);
 
@@ -63,7 +76,9 @@ void loop() {
   NetworkClient client = server.accept();  // 클라이언트가 연결되어있는지 확인
 
   if (client) {                     // 클라이언트가 연결됐다면
-    Serial.println("New Client.");  // new client라고 프린트
+    Serial.println("New Client.");
+  
+      // new client라고 프린트
     String currentLine = "";        // 클라이언트로부터 들어오는 데이터를 저장할 문자열(String) 생성
     while (client.connected()) {    // 클라이언트가 연결 되어있는동안
       if (client.available()) {     // 클라이언트로 부터 읽을수 있는 데이터가 있다면
@@ -110,55 +125,86 @@ void loop() {
             client.println("<script>");
 
             // 각 시나리오 선택 버튼에 대해 개별적인 푸시락(Push Lock) 기능을 설정
-            client.println("function toggleScenario1(btn) {");
-            client.println("  if (btn.classList.contains('active')) {");
-            client.println("    btn.classList.remove('active');");
-            client.println("    btn.innerHTML = '선택';");
-            client.println("  } else {");
-            client.println("    btn.classList.add('active');");
-            client.println("    btn.innerHTML = '선택';");
-            client.println("  }");
-            client.println("}");
+             client.println("function toggleScenario(btn, label) {");
+             client.println("  if (btn.classList.contains('active')) {");
+             client.println("    btn.classList.remove('active');");
+             client.println("    btn.innerHTML = label;");
+             client.println("  } else {");
+             client.println("    btn.classList.add('active');");
+             client.println("    btn.innerHTML = label + '됨';");  // 상태 변경
+             client.println("  }");
+             client.println("}");
 
-            client.println("function toggleScenario2(btn) {");
-            client.println("  if (btn.classList.contains('active')) {");
-            client.println("    btn.classList.remove('active');");
-            client.println("    btn.innerHTML = '선택';");
-            client.println("  } else {");
-            client.println("    btn.classList.add('active');");
-            client.println("    btn.innerHTML = '선택';");
-            client.println("  }");
-            client.println("}");
 
-            client.println("function toggleScenario3(btn) {");
-            client.println("  if (btn.classList.contains('active')) {");
-            client.println("    btn.classList.remove('active');");
-            client.println("    btn.innerHTML = '선택';");
-            client.println("  } else {");
-            client.println("    btn.classList.add('active');");
-            client.println("    btn.innerHTML = '선택';");
-            client.println("  }");
-            client.println("}");
 
-            client.println("function toggleScenario4(btn) {");
-            client.println("  if (btn.classList.contains('active')) {");
-            client.println("    btn.classList.remove('active');");
-            client.println("    btn.innerHTML = '선택';");
-            client.println("  } else {");
-            client.println("    btn.classList.add('active');");
-            client.println("    btn.innerHTML = '선택';");
-            client.println("  }");
-            client.println("}");
 
-            client.println("function toggleScenario5(btn) {");
-            client.println("  if (btn.classList.contains('active')) {");
-            client.println("    btn.classList.remove('active');");
-            client.println("    btn.innerHTML = '선택';");
-            client.println("  } else {");
-            client.println("    btn.classList.add('active');");
-            client.println("    btn.innerHTML = '선택';");
-            client.println("  }");
-            client.println("}");
+// Placeholder for the action functions that are called
+            // const int scenarioCount2 = 5; 
+
+            //   for (int i = 1; i <= scenarioCount2; i++) {
+            //   client.println("function selected(i) {");
+  
+            //   client.println("}"
+
+            //   client.println("function saved(i) {");
+            //   client.println("}");
+
+            //   client.println("function send(i) {");
+            //   client.println("}");
+
+            //   client.println("function delete(i) {");
+            //   client.println("}");
+            //   }
+          
+            // client.println("function toggleScenario1(btn) {");
+            // client.println("  if (btn.classList.contains('active')) {");
+            // client.println("    btn.classList.remove('active');");
+            // client.println("    btn.innerHTML = '선택';");
+            // client.println("  } else {");
+            // client.println("    btn.classList.add('active');");
+            // client.println("    btn.innerHTML = '선택';");
+            // client.println("  }");
+            // client.println("}");
+
+            // client.println("function toggleScenario2(btn) {");
+            // client.println("  if (btn.classList.contains('active')) {");
+            // client.println("    btn.classList.remove('active');");
+            // client.println("    btn.innerHTML = '선택';");
+            // client.println("  } else {");
+            // client.println("    btn.classList.add('active');");
+            // client.println("    btn.innerHTML = '선택';");
+            // client.println("  }");
+            // client.println("}");
+
+            // client.println("function toggleScenario3(btn) {");
+            // client.println("  if (btn.classList.contains('active')) {");
+            // client.println("    btn.classList.remove('active');");
+            // client.println("    btn.innerHTML = '선택';");
+            // client.println("  } else {");
+            // client.println("    btn.classList.add('active');");
+            // client.println("    btn.innerHTML = '선택';");
+            // client.println("  }");
+            // client.println("}");
+
+            // client.println("function toggleScenario4(btn) {");
+            // client.println("  if (btn.classList.contains('active')) {");
+            // client.println("    btn.classList.remove('active');");
+            // client.println("    btn.innerHTML = '선택';");
+            // client.println("  } else {");
+            // client.println("    btn.classList.add('active');");
+            // client.println("    btn.innerHTML = '선택';");
+            // client.println("  }");
+            // client.println("}");
+
+            // client.println("function toggleScenario5(btn) {");
+            // client.println("  if (btn.classList.contains('active')) {");
+            // client.println("    btn.classList.remove('active');");
+            // client.println("    btn.innerHTML = '선택';");
+            // client.println("  } else {");
+            // client.println("    btn.classList.add('active');");
+            // client.println("    btn.innerHTML = '선택';");
+            // client.println("  }");
+            // client.println("}");
 
             //hex로 변환
             client.println("function saveHEX(led) {");
@@ -187,14 +233,33 @@ void loop() {
 
             client.println("<body>");  //웹 브라우저 화면에 표시되는 실제 콘텐츠가 포함될 부분
 
-            // 제목 (가운데 정렬)
+         // 제목 (가운데 정렬)
             client.println("<h1><b>MoCon Web</b></h1>");                                      // 🔹 화면에 표시할 제목 추가 <h1> 태그 → 웹 페이지의 가장 큰 제목 <h2> > <h3>
             client.println("<p>시나라오 ([선택] 누를시 해당 시나리오에 정보 저장가능)</p>");  //<p> 태그 → 단락(paragraph) 태그
-            client.println("시나리오1 <button onclick='toggleScenario1(this)'>선택</button> <button onclick='send1()'>전송</button> <button onclick='delete1()'>삭제</button>");
-            client.println("시나리오2 <button onclick='toggleScenario2(this)'>선택</button> <button onclick='send2()'>전송</button> <button onclick='delete2()'>삭제</button>");
-            client.println("시나리오3 <button onclick='toggleScenario3(this)'>선택</button> <button onclick='send3()'>전송</button> <button onclick='delete3()'>삭제</button>");
-            client.println("시나리오4 <button onclick='toggleScenario4(this)'>선택</button> <button onclick='send4()'>전송</button> <button onclick='delete4()'>삭제</button>");
-            client.println("시나리오5 <button onclick='toggleScenario5(this)'>선택</button> <button onclick='send5()'>전송</button> <button onclick='delete5()'>삭제</button>");
+            const int scenarioCount2 = 5; 
+
+              for (int i = 1; i <= scenarioCount2; i++) {
+                  client.print("<div>");  
+                  client.print("시나리오 " + String(i) + " ");
+                  
+                  client.print("<button onclick='toggleScenario(this, \"선택\"); selected(" + String(i) + ")'>선택</button> ");
+                  client.print("<button onclick='toggleScenario(this, \"저장\"); saved" + String(i) + "()'>저장</button> ");
+                  client.print("<button onclick='toggleScenario(this, \"전송\"); send" + String(i) + "()'>전송</button> ");
+                  client.print("<button onclick='toggleScenario(this, \"삭제\"); delete" + String(i) + "()'>삭제</button> ");
+                  
+                  client.println("</div><br>");  
+              }
+            // client.println("시나리오1 <button onclick='toggleScenario1(this);selected()'>선택</button> <button onclick='toggleScenario6(this);saved1()'>저장</button>  <button onclick='toggleScenario11(this);send1()'>전송</button> <button onclick='toggleScenario16(this);delete1()'>삭제</button>");
+            // client.println("시나리오2 <button onclick='toggleScenario2(this)'>선택</button> <button onclick='toggleScenario7(this);saved2()'>저장</button>  <button onclick='toggleScenario12(this);send2()'>전송</button> <button onclick='toggleScenario17(this);delete2()'>삭제</button>");
+            // client.println("시나리오3 <button onclick='toggleScenario3(this)'>선택</button> <button onclick='toggleScenario8(this);saved3()'>저장</button>  <button onclick='toggleScenario13(this);send3()'>전송</button> <button onclick='toggleScenario18(this);delete3()'>삭제</button>");
+            // client.println("시나리오4 <button onclick='toggleScenario4(this)'>선택</button> <button onclick='toggleScenario9(this);saved4()'>저장</button>  <button onclick='toggleScenario14(this);send4()'>전송</button> <button onclick='toggleScenario19(this);delete4()'>삭제</button>");
+            // client.println("시나리오5 <button onclick='toggleScenario5(this)'>선택</button> <button onclick='toggleScenario10(this);saved5()'>저장</button>  <button onclick='toggleScenario15(this);send5()'>전송</button> <button onclick='toggleScenario20(this);delete5()'>삭제</button>");
+
+            // client.println("<div>시나리오1 <button onclick='toggleScenario1(this)'>선택</button><button onclick='toggleScenario6(this);saved1()'>저장</button><button onclick='toggleScenario11(this);send1()'>전송</button><button16 onclick='toggleScenario16(this);delete1()'>삭제</button>"</div><br>);
+            // client.println("<div>시나리오2 <button onclick='toggleScenario2(this)'>선택</button><button onclick='toggleScenario7(this);saved2()'>저장</button><button onclick='toggleScenario12(this);send2()'>전송</button><button onclick='toggleScenario17(this);delete2()'>삭제</button>"</div><br>);
+            // client.println("<div>시나리오3 <button onclick='toggleScenario3(this)'>선택</button><button onclick='toggleScenario8(this);saved3()'>저장</button><button onclick='toggleScenario13(this);send3()'>전송</button><button onclick='toggleScenario18(this);delete3()'>삭제</button>"</div><br>);
+            // client.println("<div>시나리오4 <button onclick='toggleScenario4(this)'>선택</button><button onclick='toggleScenario9(this);saved4()'>저장</button><button onclick='toggleScenario14(this);send4()'>전송</button><button onclick='toggleScenario19(this);delete4()'>삭제</button>"</div><br>);
+            // client.println("<div>시나리오5 <button onclick='toggleScenario5(this)'>선택</button><button onclick='toggleScenario10(this);saved5()'>저장</button><button onclick='toggleScenario15(this);send5()'>전송</button><button onclick='toggleScenario20(this);delete5()'>삭제</button>"</div><br>);
 
             client.println("<br><br>");
             client.println("<p>LED (RGB 0~255, Dimming delay)</p>");  //<p> 태그 → 단락(paragraph) 태그
@@ -314,7 +379,9 @@ void loop() {
             client.println("</body>");
             client.println("</html>");
 
-
+           // EEPROM.put(10, value);
+            EEPROM.commit();
+            Serial.print("saved  !!!!");
 
             break;
           } else {  // if you got a newline, then clear currentLine:

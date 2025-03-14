@@ -7,7 +7,7 @@ const char* password = "MoConLab1111"; // CHANGE IT
 AsyncWebServer server(80);
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);

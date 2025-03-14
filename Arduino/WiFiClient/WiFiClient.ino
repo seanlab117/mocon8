@@ -53,7 +53,8 @@ void setup() {
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
-  // Serial.println(pwd);
+  
+ 
 }
 
 void readResponse(NetworkClient *client) {
@@ -70,9 +71,10 @@ void readResponse(NetworkClient *client) {
   while (client->available()) {
     String line = client->readStringUntil('\r');
     Serial.print(line);
+    Serial.print("line");
   }
 
-  Serial.printf("\nClosing connection\n\n");
+  //Serial.printf("\nClosing connection\n\n");
 }
 
 void loop() {
@@ -98,7 +100,10 @@ void loop() {
 
   client.print(readRequest);
   readResponse(&client);
-
+  
+   String line = client->readStringUntil('\r');
+   client.print(line);
+  readResponse(&client);
   // -------------------------------------------------------------------------------------------------
 
   ++field1;
