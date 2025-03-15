@@ -74,7 +74,10 @@ public class MainActivity10 extends AppCompatActivity {
                 if (!url.startsWith("http://") && !url.startsWith("https://")) {
                     url = "http://" + url;
                 }
-                webView.loadUrl(url); // URL 로드
+               // webView.loadUrl(url); // URL 로드
+
+                //
+                webView.loadUrl("file:///android_asset/index.html");
             }
         });
 
@@ -92,7 +95,8 @@ public class MainActivity10 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String url ="www.naver.com";
-                webView.loadUrl(url);
+                //webView.loadUrl(url);
+                webView.loadUrl("file:///android_asset/index.html");
                 Log.d("haha", "SendButton.setOnClickListener ");
                 Intent intent = new Intent("com.example.samplemenu");
                 intent.putExtra("message", "Hello, Broadcast!");

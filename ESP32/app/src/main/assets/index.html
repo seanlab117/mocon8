@@ -1,12 +1,52 @@
 <html>
 <head>
-
+MoCon WEB TEST
 </head>
-<body>
-<h1>
-    this is test
-</h1>
-</body>
-</html>
+<style>
+    body { font-size: 70px; text-align: left; }
+h1 { font-size: 80px; text-align: center; }
+p { font-size: 30px; }
+button { width: 170px; height: 80px; font-size: 40px; margin: 10px; cursor: pointer;  }
+.active { background-color: #4CAF50; color: white; }
+table { width: 100%; max-width: 1200px; margin: auto; border-collapse: collapse; }
+td { width: 130px; height: 70px; text-align: center; vertical-align: middle; padding: 5px; }
+input { width: 120px; height: 60px; font-size: 30px; text-align: left; }
+</style>
+<script>
+    function toggleScenario1(btn) {
+      if (btn.classList.contains('active')) {
+          btn.classList.remove('active');
+              btn.innerHTML = '선택';
+                } else {
+                    btn.classList.add('active');
+    btn.innerHTML = '선택';
+   }
+  }
+</script>
 
-Click <a href=\"/H\">here</a> to turn the LED on pin 5 on.<br>Click <a href=\"/L\">here</a> to turn the LED on pin 5 off.<br>
+    <body>
+    <h1>
+        MoCon WEB
+    </h1>
+
+    <p>시나라오 ([선택] 누를시 해당 시나리오에 정보 저장가능)</p>
+    시나리오1 <button onclick='toggleScenario1(this)'>선택</button> <button onclick='send1()'>전송</button> <button onclick='delete1()'>삭제</button>
+    시나리오2 <button onclick='toggleScenario2(this)'>선택</button> <button onclick='send2()'>전송</button> <button onclick='delete2()'>삭제</button>
+    시나리오3 <button onclick='toggleScenario3(this)'>선택</button> <button onclick='send2()'>전송</button> <button onclick='delete2()'>삭제</button>
+    시나리오4 <button onclick='toggleScenario4(this)'>선택</button> <button onclick='send2()'>전송</button> <button onclick='delete2()'>삭제</button>
+    시나리오5 <button onclick='toggleScenario5(this)'>선택</button> <button onclick='send2()'>전송</button> <button onclick='delete2()'>삭제</button>
+    <br><br>
+    <p>LED (RGB 0~255, Dimming delay)</p>
+
+    <p><b>LED 1 <button onclick='saveHEX(1)'>저장</button> <button onclick='DOLED1()'>실행</button> <span id='hex1'>R00 G00 B00 D00</span></b></p>
+    <table border='1'><tr>
+        <td><input id='led1_R' type='number' min='0' max='255' value='0' placeholder='R'></td>
+        <td><input id='led1_G' type='number' min='0' max='255' value='0' placeholder='G'></td>
+        <td><input id='led1_B' type='number' min='0' max='255' value='0' placeholder='B'></td>
+        <td><input id='delay1' type='number' min='0' max='5000' value='0' placeholder='D'></td>
+           </tr></table>");
+
+    </body>
+    </html>
+
+    Click <a href=\"/H\">here</a> to turn the LED on pin 5 on.<br>Click <a href=\"/L\">here</a> to turn the LED on pin 5 off.<br>
