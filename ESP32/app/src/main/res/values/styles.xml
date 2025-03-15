@@ -8,4 +8,16 @@
         <!-- Customize your theme here. -->
         <item name="wifi_signal">@drawable/wifi_signal_dark</item>
     </style>
+    <style name="data_style" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="wifi_signal">@drawable/wifi_signal_dark</item>
+    </style>
+    <style name="heading_style_less_padding" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="wifi_signal">@drawable/wifi_signal_dark</item>
+    </style>
+    <style name="heading_style" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="wifi_signal">@drawable/wifi_signal_dark</item>
+    </style>
 </resources>

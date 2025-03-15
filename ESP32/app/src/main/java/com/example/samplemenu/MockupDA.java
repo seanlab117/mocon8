@@ -17,7 +17,7 @@ public class MockupDA {
         drinks.add(new Drink("Scenario 5 ESP Connection Test", 6, "scenario2"));
         drinks.add(new Drink("Scenario 6 Scenario-RGB App test", 7, "scenario3"));
         drinks.add(new Drink("Scenario 7 Scenario ", 8, "scenario3"));
-        drinks.add(new Drink("Scenario 8 ", 9, "scenario3"));
+        drinks.add(new Drink("Scenario 8 테스트 ", 9, "scenario3"));
         drinks.add(new Drink("Scenario 9 RGB TEST", 10, "scenario3"));
 //        drinks.add(new Drink("Mango Juice", 2.50, "fruit juice"));
 //        drinks.add(new Drink("Milk", 1.00, "dairy drink"));

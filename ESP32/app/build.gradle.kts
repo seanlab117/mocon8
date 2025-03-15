@@ -45,7 +45,8 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.socketio)
-    //implementation(libs.socket:socket.io-client)
+    implementation(libs.okhttp)
+ //   implementation(libs.nettleweb)
     //implementation("com.github.jflavio1:WifiConnector:v1.7")
     //implementation(libs.wificonnector)
 
