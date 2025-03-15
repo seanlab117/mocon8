@@ -26,12 +26,6 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity10"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity9"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity8"
             android:exported="false"
             android:theme="@style/Theme.SampleMenu" />
@@ -68,33 +62,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!--
-         <receiver android:name=".MyBroadcastReceiver"
-             android:exported="true"
-             tools:ignore="WrongManifestParent">
-             <intent-filter>
-                 <action android:name="android.intent.action.LOCALE_CHANGED"/>
-             </intent-filter>
-         </receiver>
-
-         <receiver android:name=".MyBroadcastReceiver" android:exported="true"
-             tools:ignore="WrongManifestParent">
-             <intent-filter>
-                 <action android:name="android.intent.action.BATTERY_LOW"/>
-             </intent-filter>
-         </receiver>
-         -->
         </activity>
-        <!--
-        <receiver android:name=".MyBroadcastReceiver"
-            android:enabled="true"
-            android:exported="true"
-            tools:ignore="WrongManifestParent">
-            <intent-filter>
-                <action android:name="android.intent.action.LOCALE_CHANGED"/>
-            </intent-filter>
-        </receiver>
-        -->
     </application>
 
 </manifest>
