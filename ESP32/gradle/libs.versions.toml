@@ -12,7 +12,7 @@ lifecycleViewmodelKtx = "2.8.7"
 navigationFragment = "2.8.8"
 navigationUi = "2.8.8"
 socketio="1.0.1"
-nettleweb="1.0.1"
+#nettleweb="0.1.0"
 
 
 [libraries]
@@ -28,8 +28,7 @@ lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-view
 navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 socketio = { group = "io.socket", name = "socket.io-client", version.ref = "socketio" }
-nettleweb = { group = "com.nettleweb.http", name = "nettleweb", version.ref = "nettleweb" }
-
+#nettleweb = { group = "com.nettleweb.http", name = "nettleweb", version.ref = "nettleweb" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 

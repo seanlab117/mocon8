@@ -1,14 +1,17 @@
 package com.example.samplemenu;
 
-import static java.lang.System.out;
-
-import android.graphics.Color;
+import android.content.Intent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SeekBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,8 +21,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
@@ -27,37 +28,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class MainActivity9 extends AppCompatActivity {
-
-    TextView textViewColorHex, textViewRGB, textViewRed, textViewGreen, textViewBlue;
-    ImageView imageView;
-    SeekBar seekBarRed, seekBarGreen, seekBarBlue;
-    int redValue = 64;
-    int greenValue = 128;
-    int blueValue = 0;
-
-    ServerSocket server1=null;
-    Socket sock1=null;
-    TextView textViewheader;
-    // http
-
-     int port;
-     int backlog;
-     String host="192.168.0.101";
-    String baseDir = new File(".").getAbsolutePath();
-
-    private void updateColor(){
-        int color = Color.rgb(redValue, greenValue, blueValue);
-        imageView.setBackgroundColor(color);
-
-        String hex = String.format("#%02X%02X%02X", redValue, greenValue, blueValue);
-        textViewColorHex.setText(hex);
-        Log.d("haha", "updateColor:hex 1::"+hex);
-        update(hex);
-        Log.d("haha", "updateColor:hex 2::"+hex);
-        // Log.d("haha", "obj: "+obj);
-        String redGreenBlue = String.format("(%d, %d, %d)", redValue, greenValue, blueValue);
-        textViewRGB.setText(redGreenBlue);
-    }
+    private Button btn, btn2;
+    private RadioGroup rg;
+    private String search_engine = "https://www.google.com/search?q=";
+    private EditText input_url;
+    private RadioButton google;
+    private ImageView meta, youtube, wikipedia;
+    private ImageView search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,200 +42,132 @@ public class MainActivity9 extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main9);
 
-        textViewColorHex = findViewById(R.id.textViewColorHex);
-        textViewColorHex.setText("");
-        textViewRGB = findViewById(R.id.textViewRGB);
-        textViewRGB.setText("");
-        textViewRed = findViewById(R.id.textViewRed);
-        textViewGreen = findViewById(R.id.textViewGreen);
-        textViewBlue = findViewById(R.id.textViewBlue);
-        imageView = findViewById(R.id.imageView);
-        seekBarRed = findViewById(R.id.seekBarRed);
-        seekBarGreen = findViewById(R.id.seekBarGreen);
-        seekBarBlue = findViewById(R.id.seekBarBlue);
-        textViewheader=findViewById(R.id.textView);
-        updateColor();
-
-        seekBarBlue.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                blueValue = progress;
-                updateColor();
-                textViewBlue.setText(String.valueOf(progress));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
         });
+        btn = findViewById(R.id.eng);
 
-        seekBarGreen.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                greenValue = progress;
-                updateColor();
-                textViewGreen.setText(String.valueOf(progress));
-            }
+        btn2 = findViewById(R.id.eng2);
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+        rg = findViewById(R.id.rb);
+        input_url = findViewById(R.id.url_input);
+        google = findViewById(R.id.google);
+        meta = findViewById(R.id.meta);
+        youtube = findViewById(R.id.youtube);
+        wikipedia = findViewById(R.id.wikipedia);
+        search = findViewById(R.id.search);
+        google.setChecked(true);
 
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        seekBarRed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                redValue = progress;
-                updateColor();
-                textViewRed.setText(String.valueOf(progress));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        findViewById(R.id.whiteButton).setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                textViewColorHex.setText("");
-                textViewRGB.setText("");
-                redValue = 255;
-                greenValue = 255;
-                blueValue = 255;
-                updateColor();
-
-                seekBarRed.setProgress(redValue);
-                seekBarGreen.setProgress(greenValue);
-                seekBarBlue.setProgress(blueValue);
-
-                textViewRed.setText(String.valueOf(redValue));
-                textViewGreen.setText(String.valueOf(greenValue));
-                textViewBlue.setText(String.valueOf(blueValue));
-            }
-        });
-
-        findViewById(R.id.blackButton).setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                textViewColorHex.setText("");
-                textViewRGB.setText("");
-                redValue = 0;
-                greenValue = 0;
-                blueValue = 0;
-                updateColor();
-
-                seekBarRed.setProgress(redValue);
-                seekBarGreen.setProgress(greenValue);
-                seekBarBlue.setProgress(blueValue);
-
-                textViewRed.setText(String.valueOf(redValue));
-                textViewGreen.setText(String.valueOf(greenValue));
-                textViewBlue.setText(String.valueOf(blueValue));
-            }
-        });
-
-        findViewById(R.id.blueButton).setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                textViewColorHex.setText("");
-                textViewRGB.setText("");
-                redValue = 0;
-                greenValue = 0;
-                blueValue = 255;
-                updateColor();
-
-                seekBarRed.setProgress(redValue);
-                seekBarGreen.setProgress(greenValue);
-                seekBarBlue.setProgress(blueValue);
-
-                textViewRed.setText(String.valueOf(redValue));
-                textViewGreen.setText(String.valueOf(greenValue));
-                textViewBlue.setText(String.valueOf(blueValue));
-            }
-        });
-
-        findViewById(R.id.resetButton).setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                textViewColorHex.setText("");
-                textViewRGB.setText("");
-                redValue = 64;
-                greenValue = 128;
-                blueValue = 0;
-                updateColor();
-
-                seekBarRed.setProgress(redValue);
-                seekBarGreen.setProgress(greenValue);
-                seekBarBlue.setProgress(blueValue);
-
-                textViewRed.setText(String.valueOf(redValue));
-                textViewGreen.setText(String.valueOf(greenValue));
-                textViewBlue.setText(String.valueOf(blueValue));
-            }
-        });
-
-        Button button2 = findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
+        search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        startServer();
-                    }
-                }).start();
+                Intent intent = new Intent(MainActivity9.this, MainActivity.class);
+                intent.putExtra("search_engine", search_engine);
+                intent.putExtra("text", input_url.getText().toString());
+                startActivity(intent);
             }
         });
 
-    }
-    public void startServer() {
-
-        Log.d("haha", "startServer 1::");
-//        HTTPServer server = new HTTPServer(host, port, backlog, Executors.newFixedThreadPool(threads));
-//        server.setHandler(new SimpleHTTPHandler(baseDir));
-//        server.setLogger(logger);
-//        server.start();
-        textViewheader.setText("HTTPServer");
-        Log.d("haha", "startServer 2::");
-
-    }
-    public void update(String hex){
-
-
-
-
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
-        stopServer();
-    }
-
-    public void stopServer() {
-        try {
-            if (server1 != null && !server1.isClosed()) {
-                server1.close();
+        meta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity9.this, MainActivity.class);
+                intent.putExtra("search_engine", search_engine);
+                intent.putExtra("text", input_url.getText().toString());
+                intent.putExtra("shortcut","www.meta.ai");
+                startActivity(intent);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        });
+
+        youtube.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity9.this, MainActivity.class);
+                intent.putExtra("search_engine", search_engine);
+                intent.putExtra("text", input_url.getText().toString());
+                intent.putExtra("shortcut","www.youtube.com");
+                startActivity(intent);
+            }
+        });
+
+        wikipedia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity9.this, MainActivity.class);
+                intent.putExtra("search_engine", search_engine);
+                intent.putExtra("text", input_url.getText().toString());
+                intent.putExtra("shortcut","www.wikipedia.org");
+                startActivity(intent);
+            }
+        });
+
+        input_url.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_GO || actionId == EditorInfo.IME_ACTION_DONE) {
+                    Intent intent = new Intent(MainActivity9.this, MainActivity.class);
+                    intent.putExtra("search_engine", search_engine);
+                    intent.putExtra("text", input_url.getText().toString());
+                    startActivity(intent);
+                    return true;
+                }
+                return false;
+            }
+
+        });
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (rg.getVisibility() == View.VISIBLE)
+                    rg.setVisibility(View.INVISIBLE);
+                else
+                    rg.setVisibility(View.VISIBLE);
+
+            }
+
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("haha", "btn2.setOnClickListener::startServer ");
+                  startServer();
+//                Intent intent = new Intent(this, MainActivity10.class);
+//                ActivityResultLauncher.launch(intent);
+//                Toast.makeText(getApplicationContext(), "position 8", Toast.LENGTH_LONG).show();
+            }
+        });
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.google) {
+                    search_engine = "https://www.google.com/search?q=";
+                    rg.setVisibility(View.INVISIBLE);
+
+                } else if (checkedId == R.id.brave) {
+                    search_engine = "https://search.brave.com/search?q=";
+                    rg.setVisibility(View.INVISIBLE);
+
+                } else if (checkedId == R.id.duckduckgo) {
+                    search_engine = "https://www.duckduckgo.com/?q=";
+                    rg.setVisibility(View.INVISIBLE);
+
+                } else if (checkedId == R.id.bing) {
+                    search_engine = "https://www.bing.com/search?q=";
+                    rg.setVisibility(View.INVISIBLE);
+
+                }
+                Log.d("TAG", "onCheckedChanged:" + search_engine);
+            }
+        });
+
+
     }
+
+    public void startServer() {
+        Log.d("haha", "startServer ");
+
+  }
 
 }
