@@ -1,6 +1,8 @@
 package com.example.samplemenu;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +22,10 @@ import java.io.FileOutputStream;
 //https://readystory.tistory.com/182 ==>webview assets file
 //self
 //https://m.blog.naver.com/2hyoin/220386667473 ==>storge에 저장하는 법
-
+//https://kotlinworld.com/364 ==> webview broadcasting
+//https://developer.android.com/develop/ui/views/layout/webapps/webview?hl=ko#java ==>webview javascriptxx
+//https://indra17.tistory.com/entry/android-webview%EB%A1%9C-javascript-%ED%98%B8%EC%B6%9C-%EB%B0%8F-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%B0%9B%EA%B8%B0
+@SuppressLint("SetJavaScriptEnabled")
 public class MainActivity11 extends AppCompatActivity {
     WebView webView;
     EditText urlInput;
@@ -96,6 +101,7 @@ public class MainActivity11 extends AppCompatActivity {
             }
         });
         startButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("JavascriptInterface")
             @Override
             public void onClick(View v) {
                 //sean String url = urlInput.getText().toString();
@@ -107,21 +113,14 @@ public class MainActivity11 extends AppCompatActivity {
                     url = "http://" + url;
                 }
                 //webView.loadUrl(url); // URL 로드
-                webView.loadUrl("file:///android_asset/index.html"); // URL 로드
-                Log.d("haha", "server.start()::webView.getUrl()"+webView.getUrl() );
-                String filename = "myfile";
-                String string = "Hello world!";
-// Internal File
-                //FileOutputStream outputStream;
+                //webView.loadUrl("file:///android_asset/index.html"); // URL 로드
+                webView.loadUrl("file:///android_asset/webview.html");
+                //Log.d("haha", "server.start()::webView.getUrl()"+webView.getUrl() );
+                //webView.addJavascriptInterface(new WebAppInterface(ctx), "Android");
+                webView.loadUrl("javascript:setMessage('"+urlInput.getText()+"')");
 
-                try {
-                    //
-                    outputStream = outFileOutput(filename, ctx.MODE_PRIVATE);
-                    outputStream.write(string.getBytes());
-                    outputStream.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
+
             }
         });
 
@@ -129,7 +128,25 @@ public class MainActivity11 extends AppCompatActivity {
 
 
     }
+    public void read() {
+        SharedPreferences pref = getSharedPreferences("pref", MainActivity11.MODE_PRIVATE);
 
+// 저장된 값들을 불러온다.
+        String text = pref.getString("editText", "");
+    }
+    public void save()
+    {
+        SharedPreferences pref = getSharedPreferences("pref",MainActivity11.MODE_PRIVATE);
+        // Editor를 불러옴.
+        SharedPreferences.Editor editor = pref.edit();
+
+        // 저장할 값들을 입력함.
+        editor.putString("editText","test1");
+        editor.putString("editText","test2");
+
+        // 저장함
+        editor.commit();
+    }
     @Override
     public void onBackPressed() {
         if (webView.canGoBack()) {
