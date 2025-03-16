@@ -1,6 +1,8 @@
 package com.example.samplemenu;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,11 +12,14 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.FileOutputStream;
 //https://stickode.tistory.com/1352 ==> webview
 //https://oscarstory.tistory.com/70 ==> http okhttp 통신
 //https://pilot376.tistory.com/70  ==>webview assets file 읽기  x
 //https://readystory.tistory.com/182 ==>webview assets file
 //self
+//https://m.blog.naver.com/2hyoin/220386667473 ==>storge에 저장하는 법
 
 public class MainActivity11 extends AppCompatActivity {
     WebView webView;
@@ -25,6 +30,8 @@ public class MainActivity11 extends AppCompatActivity {
 
     Button startButton;
     Button sendButton;
+    Context ctx;
+    FileOutputStream outputStream;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +53,7 @@ public class MainActivity11 extends AppCompatActivity {
         // WebView 설정
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-
+        ctx=this;
         // WebViewClient 설정 (외부 브라우저로 열리지 않게 설정)
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -99,7 +106,22 @@ public class MainActivity11 extends AppCompatActivity {
                 if (!url.startsWith("http://") && !url.startsWith("https://")) {
                     url = "http://" + url;
                 }
-                webView.loadUrl(url); // URL 로드
+                //webView.loadUrl(url); // URL 로드
+                webView.loadUrl("file:///android_asset/index.html"); // URL 로드
+                Log.d("haha", "server.start()::webView.getUrl()"+webView.getUrl() );
+                String filename = "myfile";
+                String string = "Hello world!";
+// Internal File
+                //FileOutputStream outputStream;
+
+                try {
+                    //
+                    outputStream = outFileOutput(filename, ctx.MODE_PRIVATE);
+                    outputStream.write(string.getBytes());
+                    outputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
