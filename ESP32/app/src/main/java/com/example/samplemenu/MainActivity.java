@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "position 7", Toast.LENGTH_LONG).show();
             }
             case 8: {
-                Intent intent = new Intent(this, MainActivity10.class);
+                Intent intent = new Intent(this, MainActivity7.class);
                 ActivityResultLauncher.launch(intent);
                 Toast.makeText(getApplicationContext(), "position 8", Toast.LENGTH_LONG).show();
             }

@@ -1,60 +1,119 @@
 package com.example.samplemenu;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
-import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+//https://stickode.tistory.com/1352 ==> webview
+//https://oscarstory.tistory.com/70 ==> http okhttp 통신
+//https://pilot376.tistory.com/70  ==>webview assets file 읽기  x
+//https://readystory.tistory.com/182 ==>webview assets file
+//self
 
 public class MainActivity11 extends AppCompatActivity {
-//https://oscarstory.tistory.com/70
+    WebView webView;
+    EditText urlInput;
+    TextView pageTitle;
+    Button loadButton;
+    Button backButton;
+
+    Button startButton;
+    Button sendButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main11);
-        starthttp();
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-    }
-    private void starthttp(){
-        
-        String url ="http://www.naver.com/index.html";
-        OkHttpClient client = new OkHttpClient();
-        Log.d("haha", "starthttp.start() 1::");
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-        client.newCall(request).enqueue(new Callback() {
+
+        // UI 요소 초기화
+        webView = findViewById(R.id.webView);
+        urlInput = findViewById(R.id.urlInput);
+        urlInput.setText("192.168.0.101");
+
+        pageTitle = findViewById(R.id.pageTitle);
+        loadButton = findViewById(R.id.loadButton);
+        backButton = findViewById(R.id.backButton);
+
+        startButton = findViewById(R.id.startButton);
+        sendButton = findViewById(R.id.sendButton);
+
+        // WebView 설정
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+        // WebViewClient 설정 (외부 브라우저로 열리지 않게 설정)
+        webView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onFailure(Call call, IOException e) {
-
-                Log.d("haha", "server.start()::"+e);
-
-            }
-
-            public void onResponse(Call call, Response response) throws IOException {
-
-                Log.d("haha", "onResponse.start()::"+response);
-
-                Log.d("haha", ""+response.body().string());
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                //String url = "file:///android_asset/index.html";
+               // webView.loadUrl(url);
+                // 페이지가 로드된 후, 타이틀 가져오기
+                pageTitle.setText(view.getTitle());
             }
         });
+
+        // URL 로드 버튼 설정
+        loadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               //sean String url = urlInput.getText().toString();
+               //String url = "https://m.naver.com";
+                WebSettings webSettings = webView.getSettings();
+                webSettings.setJavaScriptEnabled(true);
+                webSettings.setAllowContentAccess(true);
+                //webview.loadData(urlString, "text/html;   charset=utf-8", null);
+                String url = "file:///android_asset/index.html";
+                //webView
+                if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                    url = "http://" + url;
+                }
+                webView.loadUrl("file:///android_asset/index.html"); // URL 로드
+                //webView.loadData(url, "text/html;   charset=utf-8", null);
+            }
+        });
+
+        // 뒤로가기 버튼 설정
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (webView.canGoBack()) {
+                    webView.goBack(); // WebView에서 이전 페이지로 이동
+                }
+            }
+        });
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //sean String url = urlInput.getText().toString();
+                //String url = "192.168.0.101";
+                WebSettings webSettings = webView.getSettings();
+                webSettings.setJavaScriptEnabled(true);
+                String url = "file:///android_asset/index.html";
+                if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                    url = "http://" + url;
+                }
+                webView.loadUrl(url); // URL 로드
+            }
+        });
+
+
+
+
     }
 
-
+    @Override
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }
