@@ -1,0 +1,66 @@
+
+
+id: mocon
+pw :mocon
+
+wifi ssd: moconwifi1
+      pw : moconwifi1
+
+vncserver-virtual -geometry 1280x1024
+
+raspberry pi configuration
+
+ -localization- UTF8로 설정하면 한글깨짐
+
+*rasberry pi 용 nodejs install
+sudo apt install nodejs
+
+sudo apt install npm
+
+
+ocon@raspberrypi:~ $ npm -v
+9.2.0
+mocon@raspberrypi:~ $ node -v
+
+
+v18.19.0
+
+#라즈베리 파이 고정 IP 설정
+https://ko.linux-console.net/?p=31351
+
+
+https://www.kjtimes.net/raspberry-pi%EC%97%90%EC%84%9C-%EA%B3%A0%EC%A0%95-ip-%EC%A3%BC%EC%86%8C%EB%A5%BC-%EC%84%A4%EC%A0%95%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95/
+
+https://bradheo.tistory.com/entry/Raspberry-Pi-%EB%9D%BC%EC%A6%88%EB%B2%A0%EB%A6%AC%ED%8C%8C%EC%9D%B4-%EA%B3%A0%EC%A0%95-IP-%ED%95%A0%EB%8B%B9#:~:text=%5BRaspberry%20Pi%5D%20%EA%B3%A0%EC%A0%95%20IP%20%ED%95%A0%EB%8B%B9%201%201.%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC,restart%204%204.%EC%8B%9C%EC%8A%A4%ED%85%9C%20%EC%9E%AC%EB%B6%80%ED%8C%85%20sudo%20reboot%20%EA%B3%B5%EC%9C%A0%ED%95%98%EA%B8%B0%20
+
+https://www.kjtimes.net/raspberry-pi%ec%97%90%ec%84%9c-%ea%b3%a0%ec%a0%95-ip-%ec%a3%bc%ec%86%8c%eb%a5%bc-%ec%84%a4%ec%a0%95%ed%95%98%eb%8a%94-%eb%b0%a9%eb%b2%95/
+
+*리눅스 자동 프로그램 등록
+https://inhwanjeong.tistory.com/41
+
+
+https://m.blog.naver.com/dreammaker777/222463503526
+
+
+
+https://iteddy.tistory.com/53
+cd /etc/init.d
+
+
+
+
+
+* node-red install
+https://nodered.org/docs/getting-started/local
+
+sudo npm install -g --unsafe-perm node-red
+
+
+#node-red uninstall
+
+sudo npm -g remove node-red
+sudo npm -g remove node-red-admin
+rm -R ~/.node-red
+sudo apt-get remove nodejs
+
+
