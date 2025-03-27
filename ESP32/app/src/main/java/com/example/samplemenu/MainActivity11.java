@@ -46,14 +46,14 @@ public class MainActivity11 extends AppCompatActivity {
         // UI 요소 초기화
         webView = findViewById(R.id.webView);
         urlInput = findViewById(R.id.urlInput);
-        urlInput.setText("192.168.0.101");
+        urlInput.setText("192.168.0.100:1880");
 
         pageTitle = findViewById(R.id.pageTitle);
         loadButton = findViewById(R.id.loadButton);
         backButton = findViewById(R.id.backButton);
 
-        startButton = findViewById(R.id.startButton);
-        sendButton = findViewById(R.id.sendButton);
+//        startButton = findViewById(R.id.startButton);
+//        sendButton = findViewById(R.id.sendButton);
 
         // WebView 설정
         WebSettings webSettings = webView.getSettings();
@@ -81,13 +81,14 @@ public class MainActivity11 extends AppCompatActivity {
                 webSettings.setJavaScriptEnabled(true);
                 webSettings.setAllowContentAccess(true);
                 //webview.loadData(urlString, "text/html;   charset=utf-8", null);
-                String url = "file:///android_asset/index.html";
+//                String url = "file:///android_asset/index.html";
+                String url = "192.168.0.100:1880";
                 //webView
                 if (!url.startsWith("http://") && !url.startsWith("https://")) {
                     url = "http://" + url;
                 }
-                webView.loadUrl("file:///android_asset/index.html"); // URL 로드
-                //webView.loadData(url, "text/html;   charset=utf-8", null);
+                //webView.loadUrl("file:///android_asset/index.html"); // URL 로드
+                webView.loadData(url, "text/html;   charset=utf-8", null);
             }
         });
 
@@ -98,29 +99,6 @@ public class MainActivity11 extends AppCompatActivity {
                 if (webView.canGoBack()) {
                     webView.goBack(); // WebView에서 이전 페이지로 이동
                 }
-            }
-        });
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("JavascriptInterface")
-            @Override
-            public void onClick(View v) {
-                //sean String url = urlInput.getText().toString();
-                //String url = "192.168.0.101";
-                WebSettings webSettings = webView.getSettings();
-                webSettings.setJavaScriptEnabled(true);
-                String url = "file:///android_asset/index.html";
-                if (!url.startsWith("http://") && !url.startsWith("https://")) {
-                    url = "http://" + url;
-                }
-                //webView.loadUrl(url); // URL 로드
-                //webView.loadUrl("file:///android_asset/index.html"); // URL 로드
-                webView.loadUrl("file:///android_asset/webview.html");
-                //Log.d("haha", "server.start()::webView.getUrl()"+webView.getUrl() );
-                //webView.addJavascriptInterface(new WebAppInterface(ctx), "Android");
-                webView.loadUrl("javascript:setMessage('"+urlInput.getText()+"')");
-
-
-
             }
         });
 

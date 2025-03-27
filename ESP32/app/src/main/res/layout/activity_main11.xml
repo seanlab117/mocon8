@@ -37,14 +37,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="뒤로가기" />
-    <Button
-        android:id="@+id/startButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="서버실행" />
-    <Button
-        android:id="@+id/sendButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="전송" />
+
 </LinearLayout>
