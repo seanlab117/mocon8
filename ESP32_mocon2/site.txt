@@ -1,0 +1,5 @@
+broadcasting
+https://stickode.tistory.com/339
+https://velog.io/@kej_ad/AndroidKotlin-BroadcastReceiver-%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-LocalBroadcastManager-%EA%B9%8C%EC%A7%80
+
+https://codechacha.com/ko/android-broadcast-receiver/
