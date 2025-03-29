@@ -51,7 +51,7 @@ public class MainActivity11 extends AppCompatActivity {
         // UI 요소 초기화
         webView = findViewById(R.id.webView);
         urlInput = findViewById(R.id.urlInput);
-        save();
+        save("test1");
         text2=read();
         Log.d("haha", "pref 1::"+text2);
 
@@ -130,6 +130,7 @@ public class MainActivity11 extends AppCompatActivity {
             public void onClick(View v) {
                //sean String url = urlInput.getText().toString();
                 Log.d("haha", "pref 3::"+text2);
+                text2=read();
                 if(text2.equals("test1")) {
                     //url ="https://www.naver.com";
                     url ="http://192.168.0.102:1880";
@@ -181,6 +182,7 @@ public class MainActivity11 extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d("haha", "pref 4::"+text2);
                 //sean String url = urlInput.getText().toString();
+                    text2=read();
                     if(text2.equals("test1")) {
                     //url="www.naver.com";
                     url = "http://192.168.0.102:1880/ui/";
@@ -218,6 +220,7 @@ public class MainActivity11 extends AppCompatActivity {
                 //webView.loadUrl("file:///android_asset/index.html"); // URL 로드
                 //webView.loadData(url, "text/html;   charset=utf-8", null);
                 webView.loadUrl(url);
+                save("test2");
             }
         });
 
@@ -239,14 +242,14 @@ public class MainActivity11 extends AppCompatActivity {
         String text = pref.getString("editText", "");
         return text;
     }
-    public void save()
+    public void save(String str)
     {
         SharedPreferences pref = getSharedPreferences("pref",MainActivity11.MODE_PRIVATE);
         // Editor를 불러옴.
         SharedPreferences.Editor editor = pref.edit();
         Log.d("haha", "pref 7::");
         // 저장할 값들을 입력함.
-        editor.putString("editText","test1");
+        editor.putString("editText",str);
         Log.d("haha", "pref 8::");
         // 저장함
         editor.commit();
